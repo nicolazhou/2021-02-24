@@ -1,4 +1,3 @@
-
 /**
  * Sample Skeleton for 'Scene.fxml' Controller Class
  */
@@ -8,8 +7,11 @@ package it.polito.tdp.PremierLeague;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import it.polito.tdp.PremierLeague.model.GiocatoreMigliore;
 import it.polito.tdp.PremierLeague.model.Match;
 import it.polito.tdp.PremierLeague.model.Model;
+import it.polito.tdp.PremierLeague.model.Player;
+import it.polito.tdp.PremierLeague.model.SimulatorResult;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -48,15 +50,86 @@ public class FXMLController {
     @FXML
     void doCreaGrafo(ActionEvent event) {
     	
+    	this.txtResult.clear();
+    	
+    	Match match = this.cmbMatch.getValue();
+    	
+    	if(match == null) {
+    		
+    		this.txtResult.setText("Scegli un match!");
+    		return;
+    		
+    	}
+    	
+    	this.model.creaGrafo(match);
+    	
+    	this.txtResult.appendText("Grafo creato! \n");
+    	this.txtResult.appendText("# Vertici: " + this.model.getNNodes() + "\n");
+    	this.txtResult.appendText("# Archi: " + this.model.getNArchi() + "\n");
+    	
     }
 
     @FXML
-    void doGiocatoreMigliore(ActionEvent event) {    	
+    void doGiocatoreMigliore(ActionEvent event) {  
+    	
+    	this.txtResult.clear();
+    	
+    	Match match = this.cmbMatch.getValue();
+    	
+    	if(match == null) {
+    		
+    		this.txtResult.setText("Scegli un match!");
+    		return;
+    		
+    	}
+    	
+    	if(!this.model.isGrafoLoaded()) {
+    		
+    		this.txtResult.setText("Crea Grafo prima!");
+    		return;
+    		
+    	}
+    	
+    	GiocatoreMigliore player = this.model.getGiocatoreMigliore();
+    	
+    	this.txtResult.appendText(player+"\n");
+    	
+    	
     	
     }
     
     @FXML
     void doSimula(ActionEvent event) {
+    	
+    	this.txtResult.clear();
+    	
+    	if(!this.model.isGrafoLoaded()) {
+    		
+    		this.txtResult.setText("Crea grafo prima!");
+    		return;
+    		
+    	}
+    	
+    	String input = this.txtN.getText();
+    	
+    	Integer n = 0;
+    	
+    	try {
+    		
+    		n = Integer.parseInt(input);
+    		
+    	}catch(NumberFormatException e) {
+    		
+    		this.txtResult.appendText("Inserisci un valore numerico ad N");
+    		return;
+    		
+    	}
+    	
+    	SimulatorResult sim = this.model.simula(n);
+    	
+    	
+    	this.txtResult.appendText(sim.toString() + "\n");
+    	
 
     }
 
@@ -73,5 +146,9 @@ public class FXMLController {
     
     public void setModel(Model model) {
     	this.model = model;
+    	
+    	
+    	this.cmbMatch.getItems().addAll(this.model.getMatches());
+    	
     }
 }

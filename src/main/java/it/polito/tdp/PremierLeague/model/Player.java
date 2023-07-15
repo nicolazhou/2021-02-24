@@ -4,10 +4,13 @@ public class Player {
 	Integer playerID;
 	String name;
 	
-	public Player(Integer playerID, String name) {
+	Double efficienza;
+	
+	public Player(Integer playerID, String name, Double efficienza) {
 		super();
 		this.playerID = playerID;
 		this.name = name;
+		this.efficienza = efficienza;
 	}
 	
 	public Integer getPlayerID() {
@@ -21,6 +24,16 @@ public class Player {
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	
+
+	public Double getEfficienza() {
+		return efficienza;
+	}
+
+	public void setEfficienza(Double efficienza) {
+		this.efficienza = efficienza;
 	}
 
 	@Override
